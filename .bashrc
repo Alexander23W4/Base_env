@@ -165,3 +165,6 @@ alias rvstrip="riscv64-linux-gnu-strip"
 alias rvaddr2line="riscv64-linux-gnu-addr2line"
 alias rvc++filt="riscv64-linux-gnu-c++filt"
 alias rvelfedit="riscv64-linux-gnu-elfedit"
+
+
+alias py="python3"
