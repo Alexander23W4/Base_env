@@ -168,3 +168,4 @@ alias rvelfedit="riscv64-linux-gnu-elfedit"
 
 
 alias py="python3"
+export LD_LIBRARY_PATH=/usr/lib64:$LD_LIBRARY_PATH
