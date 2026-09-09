@@ -170,28 +170,99 @@ alias rvelfedit="riscv64-linux-gnu-elfedit"
 alias py="python3"
 export LD_LIBRARY_PATH=/usr/lib64:$LD_LIBRARY_PATH
 
-# Windows host proxy
-proxy_on() {
-    export HTTP_PROXY="http://192.168.47.1:7897"
-    export HTTPS_PROXY="http://192.168.47.1:7897"
-    export NO_PROXY="localhost,127.0.0.1,::1"
+# ============================================================
+# Windows proxy configuration
+# ============================================================
 
-    echo "Proxy enabled: http://192.168.47.1:7897"
+PROXY_HOST="192.168.47.1"
+PROXY_PORT="7897"
+
+
+# Enable proxy
+proxy_on() {
+
+    # Terminal applications
+    export HTTP_PROXY="http://${PROXY_HOST}:${PROXY_PORT}"
+    export HTTPS_PROXY="http://${PROXY_HOST}:${PROXY_PORT}"
+    export ALL_PROXY="socks5://${PROXY_HOST}:${PROXY_PORT}"
+
+    export http_proxy="$HTTP_PROXY"
+    export https_proxy="$HTTPS_PROXY"
+    export all_proxy="$ALL_PROXY"
+
+    export NO_PROXY="localhost,127.0.0.1,::1"
+    export no_proxy="$NO_PROXY"
+
+    # GNOME system proxy
+    gsettings set org.gnome.system.proxy mode 'manual'
+
+    # Disable HTTP proxy in GNOME
+    gsettings set org.gnome.system.proxy.http host ''
+    gsettings set org.gnome.system.proxy.http port 0
+
+    # Disable HTTPS proxy in GNOME
+    gsettings set org.gnome.system.proxy.https host ''
+    gsettings set org.gnome.system.proxy.https port 0
+
+    # Configure SOCKS5 proxy
+    gsettings set org.gnome.system.proxy.socks host "$PROXY_HOST"
+    gsettings set org.gnome.system.proxy.socks port "$PROXY_PORT"
+
+    echo "Proxy enabled"
+    echo "HTTP/HTTPS: http://${PROXY_HOST}:${PROXY_PORT}"
+    echo "SOCKS5:      socks5://${PROXY_HOST}:${PROXY_PORT}"
+    echo "GNOME proxy: enabled"
 }
 
+
+# Disable proxy
 proxy_off() {
+
+    # Remove terminal proxy variables
     unset HTTP_PROXY
     unset HTTPS_PROXY
     unset ALL_PROXY
+
     unset http_proxy
     unset https_proxy
     unset all_proxy
 
-    echo "Proxy disabled: using default network"
+    unset NO_PROXY
+    unset no_proxy
+
+    # Disable GNOME system proxy
+    gsettings set org.gnome.system.proxy mode 'none'
+
+    echo "Proxy disabled"
+    echo "Using default VMware NAT network"
 }
 
+
+# Show proxy status
 proxy_status() {
+
+    echo "========================================"
+    echo "Terminal proxy"
+    echo "========================================"
+
     echo "HTTP_PROXY=${HTTP_PROXY:-not set}"
     echo "HTTPS_PROXY=${HTTPS_PROXY:-not set}"
     echo "ALL_PROXY=${ALL_PROXY:-not set}"
+
+    echo
+    echo "========================================"
+    echo "GNOME proxy"
+    echo "========================================"
+
+    echo "Mode:"
+    gsettings get org.gnome.system.proxy mode
+
+    echo
+    echo "SOCKS host:"
+    gsettings get org.gnome.system.proxy.socks host
+
+    echo "SOCKS port:"
+    gsettings get org.gnome.system.proxy.socks port
+
+    echo "========================================"
 }
