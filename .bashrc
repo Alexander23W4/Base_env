@@ -169,3 +169,29 @@ alias rvelfedit="riscv64-linux-gnu-elfedit"
 
 alias py="python3"
 export LD_LIBRARY_PATH=/usr/lib64:$LD_LIBRARY_PATH
+
+# Windows host proxy
+proxy_on() {
+    export HTTP_PROXY="http://192.168.47.1:7897"
+    export HTTPS_PROXY="http://192.168.47.1:7897"
+    export NO_PROXY="localhost,127.0.0.1,::1"
+
+    echo "Proxy enabled: http://192.168.47.1:7897"
+}
+
+proxy_off() {
+    unset HTTP_PROXY
+    unset HTTPS_PROXY
+    unset ALL_PROXY
+    unset http_proxy
+    unset https_proxy
+    unset all_proxy
+
+    echo "Proxy disabled: using default network"
+}
+
+proxy_status() {
+    echo "HTTP_PROXY=${HTTP_PROXY:-not set}"
+    echo "HTTPS_PROXY=${HTTPS_PROXY:-not set}"
+    echo "ALL_PROXY=${ALL_PROXY:-not set}"
+}
