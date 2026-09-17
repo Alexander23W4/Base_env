@@ -129,8 +129,8 @@ export NVBOARD_HOME=/home/wang/InternalDependent_ysyx-workbench/nvboard
 alias ysyx="firefox https://ysyx.oscc.cc/docs/en/#learning-resources"
 export PATH=$PATH:~/InternalDependent_ysyx-workbench/oss-cad-suite/bin
 nvboard() {
-    code ~/InternalDependent_ysyx-workbench/VerTest/nvbtest2 ~/InternalDependent_ysyx-workbench/nvboard
-    cd ~/InternalDependent_ysyx-workbench/VerTest/nvbtest2
+    code ~/InternalDependent_ysyx-workbench/VerTest/nvbtest_soc ~/InternalDependent_ysyx-workbench/nvboard
+    cd ~/InternalDependent_ysyx-workbench/VerTest/nvbtest_soc
 }
 
 yosth() {
